@@ -21,17 +21,19 @@ export default function Home() {
         <h1 className="font-extrabold text-black text-[32px]">
           The Community Showcase
         </h1>
-        <p className="mt-2 text-[#666e75] font-medium max-w-screen-xs">
+        <p className="mt-2 text-[#666e75] text-[16px] max-w-[500px] text-justify">
           Transform your words into vivid images with PicGenie. Unleash your
           creativity and see your ideas come to life through AI-powered
           visualizations{" "}
         </p>
+        </div>
+        
 
         <div className="mt-16 ">
           <FormField />
         </div>
 
-        <div className="mt-10"></div>
+        <div className="mt-10">
         {loading ? (
           <div className="flex justify-center items-center">
             <Loader />
@@ -53,7 +55,7 @@ export default function Home() {
             </div>
           </>
         )}
-      </div>
+        </div>
     </section>
   );
 }
