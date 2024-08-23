@@ -35,7 +35,7 @@ const CreatePost = () => {
       try {
         setGeneratingImg(true);
         const response = await fetch(
-          "http://localhost:8080/api/v1/dalle/generate",
+          "/api/v1/dalle/generate",
           {
             method: "POST",
             headers: {
@@ -64,7 +64,7 @@ const CreatePost = () => {
       setLoading(true);
       try {
         const response = await fetch(
-          "http://localhost:8080/api/v1/post/create",
+          "/api/v1/post/create",
           {
             method: "POST",
             headers: {

@@ -26,7 +26,7 @@ export default function Home() {
     const fetchPosts = async () => {
       setLoading(true);
       try {
-        const response = await fetch("http://localhost:8080/api/v1/post/get", {
+        const response = await fetch("/api/v1/post/get", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
