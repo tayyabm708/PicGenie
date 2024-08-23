@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Loader, Card, FormField } from "../components";
 
 const RenderCards = ({ data, title }) => {
+  console.log(data);
+
   if (data?.length > 0) {
     return data.map((post) => <Card key={post._id} {...post} />);
   }
@@ -14,7 +16,53 @@ const RenderCards = ({ data, title }) => {
 export default function Home() {
   const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useState(null);
+  const [searchedResults, setSearchedResults] = useState(null);
+  const [searchTimeOut, setsearchTimeOut] = useState(null);
+  // console.log(posts.length);
+
   const [searchText, setsearchText] = useState("");
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch("http://localhost:8080/api/v1/post/get", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          setPosts(result.data.reverse());
+          //console.log(result.data);
+        }
+      } catch (error) {
+        console.error("Error fetching posts", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPosts();
+  }, []);
+
+  const handleSearch = (e) => {
+    clearTimeout(searchTimeOut);
+    setsearchText(e.target.value);
+
+    setsearchTimeOut(
+      setTimeout(() => {
+        const searchResults = posts.filter(
+          (item) =>
+            item.name.toLowerCase().includes(searchText.toLowerCase()) ||
+            item.prompt.toLowerCase().includes(searchText.toLowerCase())
+        );
+
+        setSearchedResults(searchResults);
+      }, 500)
+    );
+  };
   return (
     <section className="max-w-7xl mx-auto">
       <div>
@@ -26,14 +74,20 @@ export default function Home() {
           creativity and see your ideas come to life through AI-powered
           visualizations{" "}
         </p>
-        </div>
-        
+      </div>
 
-        <div className="mt-16 ">
-          <FormField />
-        </div>
+      <div className="mt-16 ">
+        <FormField
+          labelName="Search Posts"
+          type="text"
+          name="text"
+          placeholder="Search posts"
+          value={searchText}
+          handleChange={handleSearch}
+        />
+      </div>
 
-        <div className="mt-10">
+      <div className="mt-10">
         {loading ? (
           <div className="flex justify-center items-center">
             <Loader />
@@ -48,14 +102,14 @@ export default function Home() {
             )}
             <div className="grid lg:grid-cols-4 sm:grid-cols-3 xs:grid-cols-2 grid-cols-1 gap-3">
               {searchText ? (
-                <RenderCards data={[]} title="No search results found" />
+                <RenderCards data={searchedResults} title="No search results found" />
               ) : (
-                <RenderCards data={[]} title="No posts found" />
+                <RenderCards data={posts} title="No posts found" />
               )}
             </div>
           </>
         )}
-        </div>
+      </div>
     </section>
   );
 }
