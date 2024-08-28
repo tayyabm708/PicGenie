@@ -2,11 +2,13 @@ import express from "express";
 import * as dotenv from "dotenv";
 import connectDB from "./mongodb/connect.js";
 import cors from "cors";
-import postRoutes from "./routes/postRoute.js"
-import dalleRoutes from "./routes/dalleRoute.js"
+import postRoutes from "./routes/postRoute.js";
+import dalleRoutes from "./routes/dalleRoute.js";
 dotenv.config();
 
 const app = express();
+
+
 app.use(cors());
 app.use(express.json({ limit: "50mb" }));
 
@@ -25,7 +27,6 @@ const startServer = async () => {
     });
   } catch (error) {
     console.log(error);
-    
   }
 };
 
