@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index",
-    "build": "npm install && npm install --prefix client && npm run build --prefix client"
+    "start": "nodemon index"
   },
   "keywords": [],
   "author": "",
